@@ -82,7 +82,39 @@ const CreatePDFWithTextBox: React.FC = () => {
       { id: educationId, text: formData.education, x: 50, y: educationY },
     ]);
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, id: string) => {
+    const moveAmount = 5; // Adjust this value for the desired movement speed
+    const updatedTextboxes = textboxes.map((textbox) => {
+      if (textbox.id === id) {
+        let newX = textbox.x;
+        let newY = textbox.y;
+        switch (event.key) {
+          case "ArrowUp":
+            newY -= moveAmount;
+            break;
+          case "ArrowDown":
+            newY += moveAmount;
+            break;
+          case "ArrowLeft":
+            newX -= moveAmount;
+            break;
+          case "ArrowRight":
+            newX += moveAmount;
+            break;
+          default:
+            return textbox;
+        }
+        return { ...textbox, x: newX, y: newY };
+      } else {
+        return textbox;
+      }
+    });
+    setTextboxes(updatedTextboxes);
+  };
   
+  
+
 
   return (
     <div>
@@ -123,10 +155,13 @@ const CreatePDFWithTextBox: React.FC = () => {
         onDrop={handleDrop}
       >
         {textboxes.map((textbox) => (
+      // In the textboxes map function
           <div
             key={textbox.id}
             draggable={!isDragging}
             onDragStart={(event) => handleDragStart(event, textbox.id)}
+            onKeyDown={(event) => handleKeyDown(event, textbox.id)}
+            tabIndex={0}
             style={{ position: "absolute", left: textbox.x, top: textbox.y }}
           >
             <input
@@ -142,6 +177,7 @@ const CreatePDFWithTextBox: React.FC = () => {
           </div>
         ))}
       </div>
+      
       <button onClick={downloadPdf}>Download PDF</button>
     </div>
   );
