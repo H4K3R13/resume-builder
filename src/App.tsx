@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 import Draggable from "react-draggable"; // The default
 
-const CreatePDFWithTextBox: React.FC = () => {
+const App = () => {
+  
   const [textboxes, setTextboxes] = useState<
     { id: string; text: string; x: number; y: number }[]
   >([]);
-  
+
   const [formData, setFormData] = useState<{
     name: string;
     experience: string;
@@ -17,32 +18,32 @@ const CreatePDFWithTextBox: React.FC = () => {
     education: "",
   });
 
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  // const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  const handleDragStart = (
-    event: React.DragEvent<HTMLDivElement>,
-    id: string
-  ) => {
-    event.dataTransfer.setData("id", id);
-    setIsDragging(true);
-  };
+  // const handleDragStart = (
+  //   event: React.DragEvent<HTMLDivElement>,
+  //   id: string
+  // ) => {
+  //   event.dataTransfer.setData("id", id);
+  //   setIsDragging(true);
+  // };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
+  // const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+  //   event.preventDefault();
+  // };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const id = event.dataTransfer.getData("id");
-    const { clientX, clientY } = event;
-    const pdfX = (clientX * 210) / window.innerWidth;
-    const pdfY = (clientY * 297) / window.innerHeight;
-    const updatedTextboxes = textboxes.map((textbox) =>
-      textbox.id === id ? { ...textbox, x: pdfX, y: pdfY } : textbox
-    );
-    setTextboxes(updatedTextboxes);
-    setIsDragging(false);
-  };
+  // const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  //   event.preventDefault();
+  //   const id = event.dataTransfer.getData("id");
+  //   const { clientX, clientY } = event;
+  //   const pdfX = (clientX * 210) / window.innerWidth;
+  //   const pdfY = (clientY * 297) / window.innerHeight;
+  //   const updatedTextboxes = textboxes.map((textbox) =>
+  //     textbox.id === id ? { ...textbox, x: pdfX, y: pdfY } : textbox
+  //   );
+  //   setTextboxes(updatedTextboxes);
+  //   setIsDragging(false);
+  // };
 
   const downloadPdf = () => {
     const doc = new jsPDF("p", "mm", "a4");
@@ -96,38 +97,38 @@ const CreatePDFWithTextBox: React.FC = () => {
     ]);
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-    id: string
-  ) => {
-    const moveAmount = 5; // Adjust this value for the desired movement speed
-    const updatedTextboxes = textboxes.map((textbox) => {
-      if (textbox.id === id) {
-        let newX = textbox.x;
-        let newY = textbox.y;
-        switch (event.key) {
-          case "ArrowUp":
-            newY -= moveAmount;
-            break;
-          case "ArrowDown":
-            newY += moveAmount;
-            break;
-          case "ArrowLeft":
-            newX -= moveAmount;
-            break;
-          case "ArrowRight":
-            newX += moveAmount;
-            break;
-          default:
-            return textbox;
-        }
-        return { ...textbox, x: newX, y: newY };
-      } else {
-        return textbox;
-      }
-    });
-    setTextboxes(updatedTextboxes);
-  };
+  // const handleKeyDown = (
+  //   event: React.KeyboardEvent<HTMLDivElement>,
+  //   id: string
+  // ) => {
+  //   const moveAmount = 5; // Adjust this value for the desired movement speed
+  //   const updatedTextboxes = textboxes.map((textbox) => {
+  //     if (textbox.id === id) {
+  //       let newX = textbox.x;
+  //       let newY = textbox.y;
+  //       switch (event.key) {
+  //         case "ArrowUp":
+  //           newY -= moveAmount;
+  //           break;
+  //         case "ArrowDown":
+  //           newY += moveAmount;
+  //           break;
+  //         case "ArrowLeft":
+  //           newX -= moveAmount;
+  //           break;
+  //         case "ArrowRight":
+  //           newX += moveAmount;
+  //           break;
+  //         default:
+  //           return textbox;
+  //       }
+  //       return { ...textbox, x: newX, y: newY };
+  //     } else {
+  //       return textbox;
+  //     }
+  //   });
+  //   setTextboxes(updatedTextboxes);
+  // };
 
   return (
     <div
@@ -135,15 +136,17 @@ const CreatePDFWithTextBox: React.FC = () => {
     >
       <div
         style={{ width: "210mm", height: "297mm", backgroundColor: "#ffffff" }}
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
+        // onDragOver={handleDragOver}
+        // onDrop={handleDrop}
       >
-        {textboxes.map((textbox) => (
+        {textboxes.map((textbox) => 
+        (
+          <Draggable>
           <div
             key={textbox.id}
-            draggable={!isDragging}
-            onDragStart={(event) => handleDragStart(event, textbox.id)}
-            onKeyDown={(event) => handleKeyDown(event, textbox.id)}
+            // draggable="true"
+            // onDragStart={(event) => handleDragStart(event, textbox.id)}
+            // onKeyDown={(event) => handleKeyDown(event, textbox.id)}
             tabIndex={0}
             style={{ position: "absolute", left: textbox.x, top: textbox.y }}
           >
@@ -171,6 +174,7 @@ const CreatePDFWithTextBox: React.FC = () => {
               }}
             />
           </div>
+          </Draggable>
         ))}
       </div>
 
@@ -234,4 +238,4 @@ const CreatePDFWithTextBox: React.FC = () => {
   );
 };
 
-export default CreatePDFWithTextBox;
+export default App;
