@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
+import Draggable from "react-draggable"; // The default
 
 const CreatePDFWithTextBox: React.FC = () => {
   const [textboxes, setTextboxes] = useState<
@@ -221,6 +222,10 @@ const CreatePDFWithTextBox: React.FC = () => {
           <button type="submit">Submit</button>
         </form>
         <button onClick={downloadPdf}>Download PDF</button>
+
+        <Draggable>
+          <div style={{ color: "white" }}>I can now be moved around!</div>
+        </Draggable>
       </div>
     </div>
   );
