@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
-import Draggable from "react-draggable"; // The default
+import Draggable from "react-draggable";
 
 const App = () => {
   
@@ -57,13 +57,31 @@ const App = () => {
       "F"
     );
 
+    console.log("textboxes : ", textboxes)
+    
+    //var element = document.getElementById('name');
+    
+    var position = document.getElementById('name').getBoundingClientRect();
+    var name_x = position.left 
+    var name_y = position.top 
+
+    var position = document.getElementById('experience').getBoundingClientRect();
+    var experience_x = position.left 
+    var experience_y = position.top 
+
+    var position = document.getElementById('education').getBoundingClientRect();
+    var education_x = position.left 
+    var education_y = position.top 
+
+    console.log("x,y div id name", name_x ,name_y)
+
     textboxes.forEach((textbox) => {
-      if (textbox.id.includes("-name")) {
-        doc.text(`Name: ${textbox.text}`, textbox.x, textbox.y);
-      } else if (textbox.id.includes("-experience")) {
-        doc.text(`Experience: ${textbox.text}`, textbox.x, textbox.y);
-      } else if (textbox.id.includes("-education")) {
-        doc.text(`Education: ${textbox.text}`, textbox.x, textbox.y);
+      if (textbox.id.includes("name")) {
+        doc.text(`Name: ${textbox.text}`, (name_x * 210) / window.innerWidth, (name_y * 297) / window.innerHeight);
+      } else if (textbox.id.includes("experience")) {
+        doc.text(`Experience: ${textbox.text}`, (experience_x * 210) / window.innerWidth, (experience_y * 297) / window.innerHeight);
+      } else if (textbox.id.includes("education")) {
+        doc.text(`Education: ${textbox.text}`,  (education_x * 210) / window.innerWidth, (education_y * 297) / window.innerHeight);
       }
     });
 
@@ -79,21 +97,21 @@ const App = () => {
       return;
     }
 
-    const idPrefix = `textbox-${textboxes.length + 1}`;
+    // const idPrefix = `textbox-${textboxes.length + 1}`;
 
-    const nameId = `${idPrefix}-name`;
-    const experienceId = `${idPrefix}-experience`;
-    const educationId = `${idPrefix}-education`;
+    // const nameId = `${idPrefix}-name`;
+    // const experienceId = `${idPrefix}-experience`;
+    // const educationId = `${idPrefix}-education`;
 
     const nameY = 50 + textboxes.length * 20;
     const experienceY = nameY + 30;
-    const educationY = experienceY + 30; // Adjusted from + 40 to + 30
+    const educationY = experienceY + 30; 
 
     setTextboxes([
       ...textboxes,
-      { id: nameId, text: formData.name, x: 50, y: nameY },
-      { id: experienceId, text: formData.experience, x: 50, y: experienceY },
-      { id: educationId, text: formData.education, x: 50, y: educationY },
+      { id: "name", text: formData.name, x: 50, y: nameY },
+      { id: "experience", text: formData.experience, x: 50, y: experienceY },
+      { id: "education", text: formData.education, x: 50, y: educationY },
     ]);
   };
 
@@ -135,6 +153,7 @@ const App = () => {
       style={{ display: "flex", padding: ".5rem .5rem", borderRadius: "3rem" }}
     >
       <div
+        id="paper"
         style={{ width: "210mm", height: "297mm", backgroundColor: "#ffffff" }}
         // onDragOver={handleDragOver}
         // onDrop={handleDrop}
@@ -150,16 +169,16 @@ const App = () => {
             tabIndex={0}
             style={{ position: "absolute", left: textbox.x, top: textbox.y }}
           >
-            {textbox.id.includes("-name") && (
-              <div style={{ color: "black" }}>Name:</div>
+            {textbox.id.includes("name") && (
+              <div id="name" style={{ color: "black" }}>Name:</div>
             )}
-            {textbox.id.includes("-experience") && (
-              <div style={{ color: "black", marginTop: "20px" }}>
+            {textbox.id.includes("experience") && (
+              <div id="experience" style={{ color: "black", marginTop: "20px" }}>
                 Experience:
               </div>
             )}
-            {textbox.id.includes("-education") && (
-              <div style={{ color: "black", marginTop: "40px" }}>
+            {textbox.id.includes("education") && (
+              <div id="education" style={{ color: "black", marginTop: "40px" }}>
                 Education:
               </div>
             )}
@@ -229,7 +248,7 @@ const App = () => {
         <button onClick={downloadPdf}>Download PDF</button>
 
         <Draggable>
-          <div style={{ color: "white" }}>
+          <div>
             I can now be moved around! Git Branch Draggable
           </div>
         </Draggable>
