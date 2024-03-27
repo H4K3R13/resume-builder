@@ -101,7 +101,8 @@ const App = () => {
             // draggable="true"
             // onDragStart={(event) => handleDragStart(event, textbox.id)}
             // onKeyDown={(event) => handleKeyDown(event, textbox.id)}
-            tabIndex={0}
+              tabIndex={0}
+              
             style={{ position: "absolute", left: textbox.x, top: textbox.y }}
           >
             {textbox.id.includes("name") && (
@@ -145,6 +146,7 @@ const App = () => {
           <label>
             Name:
             <input
+              className="bg-purple-800"
               type="text"
               value={formData.name}
               onChange={(e) =>
