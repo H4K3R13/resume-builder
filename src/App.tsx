@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 import Draggable from "react-draggable";
+import { Resizable } from "re-resizable";
 
 const App = () => {
+  const [drag, setDrag] = useState(true);
   const [textboxes, setTextboxes] = useState<
     { id: string; text: string; x: number; y: number }[]
   >([]);
@@ -197,8 +199,26 @@ const App = () => {
         </form>
         <button onClick={downloadPdf}>Download PDF</button>
 
-        <Draggable>
-          <div>I can now be moved around! Git Branch Draggable</div>
+        <Draggable disabled={!drag}>
+          <Resizable
+            onResizeStart={() => {
+              setDrag(false);
+              console.log("onResizeStart");
+            }}
+            onResizeStop={() => {
+              setDrag(true);
+              console.log("onResizeStop");
+            }}
+            className="hover:border-2 border-blue-500 "
+            defaultSize={{
+              width: 320,
+              height: 100,
+            }}
+          >
+            <div>
+              I can now be moved around and resized! Git Branch Resizable
+            </div>
+          </Resizable>
         </Draggable>
       </div>
     </div>
