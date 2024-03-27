@@ -18,33 +18,6 @@ const App = () => {
     education: "",
   });
 
-  // const [isDragging, setIsDragging] = useState<boolean>(false);
-
-  // const handleDragStart = (
-  //   event: React.DragEvent<HTMLDivElement>,
-  //   id: string
-  // ) => {
-  //   event.dataTransfer.setData("id", id);
-  //   setIsDragging(true);
-  // };
-
-  // const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  // };
-
-  // const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  //   event.preventDefault();
-  //   const id = event.dataTransfer.getData("id");
-  //   const { clientX, clientY } = event;
-  //   const pdfX = (clientX * 210) / window.innerWidth;
-  //   const pdfY = (clientY * 297) / window.innerHeight;
-  //   const updatedTextboxes = textboxes.map((textbox) =>
-  //     textbox.id === id ? { ...textbox, x: pdfX, y: pdfY } : textbox
-  //   );
-  //   setTextboxes(updatedTextboxes);
-  //   setIsDragging(false);
-  // };
-
   const downloadPdf = () => {
     const doc = new jsPDF("p", "mm", "a4");
     doc.setDrawColor(255, 255, 255);
@@ -59,8 +32,8 @@ const App = () => {
 
     console.log("textboxes : ", textboxes)
     
-    //var element = document.getElementById('name');
     
+    // TODO : To get x, y coordinates of the elements . To get the correct postion in the A4 sheet
     var position = document.getElementById('name').getBoundingClientRect();
     var name_x = position.left 
     var name_y = position.top 
@@ -85,9 +58,6 @@ const App = () => {
       }
     });
 
-    // textboxes.forEach((textbox) => {
-    //   doc.text(textbox.text, textbox.x, textbox.y);
-    // });
     doc.save("example.pdf");
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,11 +67,7 @@ const App = () => {
       return;
     }
 
-    // const idPrefix = `textbox-${textboxes.length + 1}`;
 
-    // const nameId = `${idPrefix}-name`;
-    // const experienceId = `${idPrefix}-experience`;
-    // const educationId = `${idPrefix}-education`;
 
     const nameY = 50 + textboxes.length * 20;
     const experienceY = nameY + 30;
@@ -115,38 +81,7 @@ const App = () => {
     ]);
   };
 
-  // const handleKeyDown = (
-  //   event: React.KeyboardEvent<HTMLDivElement>,
-  //   id: string
-  // ) => {
-  //   const moveAmount = 5; // Adjust this value for the desired movement speed
-  //   const updatedTextboxes = textboxes.map((textbox) => {
-  //     if (textbox.id === id) {
-  //       let newX = textbox.x;
-  //       let newY = textbox.y;
-  //       switch (event.key) {
-  //         case "ArrowUp":
-  //           newY -= moveAmount;
-  //           break;
-  //         case "ArrowDown":
-  //           newY += moveAmount;
-  //           break;
-  //         case "ArrowLeft":
-  //           newX -= moveAmount;
-  //           break;
-  //         case "ArrowRight":
-  //           newX += moveAmount;
-  //           break;
-  //         default:
-  //           return textbox;
-  //       }
-  //       return { ...textbox, x: newX, y: newY };
-  //     } else {
-  //       return textbox;
-  //     }
-  //   });
-  //   setTextboxes(updatedTextboxes);
-  // };
+
 
   return (
     <div
